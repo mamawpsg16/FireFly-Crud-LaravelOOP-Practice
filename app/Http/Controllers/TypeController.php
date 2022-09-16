@@ -16,7 +16,7 @@ class TypeController extends Controller
     public function index()
     {
         $types = Type::get();
-        return view('type.index',['types'=>$types]);
+        return view('type.index',compact('types'));
     }
 
     /**
@@ -71,7 +71,6 @@ class TypeController extends Controller
     public function update(TypeRequest $request,Type $type)
     {
         $type->update($request->validated());
-        // $this->insert->createPost($request->validated());
         return back()->with(['message' => 'Type Updated Successfully!']);
     }
 
@@ -84,6 +83,6 @@ class TypeController extends Controller
     public function destroy($id)
     {
         Type::findOrFail($id)->delete();
-        return back()->with(['message' => 'Type Deleted Successfully!']);
+        return redirect(route('types.index'))->with(['message' => 'Type Deleted Successfully!']);
     }
 }

@@ -19,5 +19,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('/type',TypeController::class);
-Route::resource('/item',ItemController::class);
+Route::resource('/types',TypeController::class);
+Route::resource('/items',ItemController::class);
