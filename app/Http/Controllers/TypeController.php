@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Type;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Requests\TypeRequest;
 
 class TypeController extends Controller
@@ -16,6 +17,7 @@ class TypeController extends Controller
     public function index()
     {
         $types = Type::get();
+
         return view('type.index',compact('types'));
     }
 
@@ -38,6 +40,7 @@ class TypeController extends Controller
     public function store(TypeRequest $request)
     {
         Type::create($request->validated());
+
         return back()->with(['message' => 'Type created succesfully!']);
     }
 
@@ -58,6 +61,7 @@ class TypeController extends Controller
     public function edit($id)
     {
         $type = Type::findOrFail($id);
+
         return view('type.edit',compact('type'));
     }
 
@@ -71,6 +75,7 @@ class TypeController extends Controller
     public function update(TypeRequest $request,Type $type)
     {
         $type->update($request->validated());
+
         return back()->with(['message' => 'Type Updated Successfully!']);
     }
 
@@ -83,6 +88,13 @@ class TypeController extends Controller
     public function destroy($id)
     {
         Type::findOrFail($id)->delete();
-        return redirect(route('types.index'))->with(['message' => 'Type Deleted Successfully!']);
+        
+        return back()->with(['message' => 'Item Deleted Successfully!']);
+    }
+
+    public function exportPDF(){
+        $types = Type::get();
+        $pdf = Pdf::loadView('type.export.pdf', ['types' => $types]);
+        return $pdf->stream();
     }
 }

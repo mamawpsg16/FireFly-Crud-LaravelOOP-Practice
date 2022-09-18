@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Type;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Requests\ItemRequest;
 
 class ItemController extends Controller
@@ -12,6 +13,7 @@ class ItemController extends Controller
     public function index()
     {
         $items = Item::with('type')->get();
+        
         return view('item.index', compact('items'));
     }
 
@@ -23,6 +25,7 @@ class ItemController extends Controller
     public function create()
     {
         $types = Type::get();
+
         return view('item.create', compact('types'));
     }
 
@@ -35,6 +38,7 @@ class ItemController extends Controller
     public function store(ItemRequest $request)
     {
         Item::create($request->validated());
+
         return back()->with(['message' => 'Item created succesfully!']);
     }
 
@@ -49,6 +53,7 @@ class ItemController extends Controller
     {
         $item = Item::with('type')->findOrFail($id);
         $types = Type::get();
+
         return view('item.edit', compact('types', 'item'));
     }
 
@@ -62,6 +67,7 @@ class ItemController extends Controller
     public function update(ItemRequest $request, Item $item)
     {
         $item->update($request->validated());
+
         return back()->with(['message' => 'Item Updated Successfully!']);
     }
 
@@ -74,6 +80,13 @@ class ItemController extends Controller
     public function destroy($id)
     {
         Item::findOrFail($id)->delete();
-        return redirect(route('items.index'))->with(['message' => 'Item Deleted Successfully!']);
+
+        return back()->with(['message' => 'Item Deleted Successfully!']);
+    }
+
+    public function exportPDF(){
+        $items = Item::with('type')->get();
+        $pdf = Pdf::loadView('item.export.pdf', ['items' => $items]);
+        return $pdf->stream();
     }
 }

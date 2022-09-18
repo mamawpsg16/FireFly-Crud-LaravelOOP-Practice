@@ -1,4 +1,5 @@
 <x-layout>
+    @section('title','Create Item')
     <x-back-button route="items"></x-back-button>
     <x-create-update-card>
         <x-session></x-session>

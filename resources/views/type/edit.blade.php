@@ -1,4 +1,5 @@
 <x-layout>
+    @section('title','Edit Type')
     <x-back-button route="types"></x-back-button>
     <x-create-update-card>
         <x-session></x-session>

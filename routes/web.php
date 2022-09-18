@@ -20,4 +20,7 @@ Route::get('/', function () {
 });
 
 Route::resource('/types',TypeController::class);
+Route::post('/types/exportPdf',[TypeController::class,'exportPdf'])->name('types.export-pdf');
+
 Route::resource('/items',ItemController::class);
+Route::post('/items/exportPdf',[ItemController::class,'exportPdf'])->name('items.export-pdf');
