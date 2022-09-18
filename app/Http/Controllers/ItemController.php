@@ -4,15 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\Type;
+use App\Exports\ItemsExport;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Requests\ItemRequest;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ItemController extends Controller
 {
     public function index()
     {
         $items = Item::with('type')->get();
-        return view('item.index',['items'=>$items]);
+        return view('item.index', compact('items'));
     }
 
     /**
@@ -23,8 +26,8 @@ class ItemController extends Controller
     public function create()
     {
         $types = Type::get();
-     
-        return view('item.create',compact('types'));
+
+        return view('item.create', compact('types'));
     }
 
     /**
@@ -36,15 +39,9 @@ class ItemController extends Controller
     public function store(ItemRequest $request)
     {
         Item::create($request->validated());
+
         return back()->with(['message' => 'Item created succesfully!']);
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
 
 
     /**
@@ -58,7 +55,7 @@ class ItemController extends Controller
         $item = Item::with('type')->findOrFail($id);
         $types = Type::get();
 
-        return view('item.edit',['types'=>$types,'item'=>$item]);
+        return view('item.edit', compact('types', 'item'));
     }
 
     /**
@@ -68,10 +65,10 @@ class ItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ItemRequest $request,Item $Item)
+    public function update(ItemRequest $request, Item $item)
     {
-        $Item->update($request->validated());
-        // $this->insert->createPost($request->validated());
+        $item->update($request->validated());
+
         return back()->with(['message' => 'Item Updated Successfully!']);
     }
 
@@ -84,6 +81,17 @@ class ItemController extends Controller
     public function destroy($id)
     {
         Item::findOrFail($id)->delete();
+
         return back()->with(['message' => 'Item Deleted Successfully!']);
+    }
+
+    public function exportPdf(){
+        $items = Item::with('type')->get();
+        $pdf = Pdf::loadView('item.export.pdf', ['items' => $items]);
+        return $pdf->stream();
+    }
+
+    public function exportCsv(){
+        return Excel::download(new ItemsExport(),'items.csv');
     }
 }

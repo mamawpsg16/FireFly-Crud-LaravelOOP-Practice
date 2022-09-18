@@ -19,5 +19,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('/type',TypeController::class);
-Route::resource('/item',ItemController::class);
+/* TYPES */
+Route::resource('/types',TypeController::class);
+Route::post('/types/exportPdf',[TypeController::class,'exportPdf'])->name('types.export-pdf');
+Route::post('/types/exportCsv',[TypeController::class,'exportCsv'])->name('types.export-csv');
+
+/* ITEMS */
+Route::resource('/items',ItemController::class);
+Route::post('/items/exportPdf',[ItemController::class,'exportPdf'])->name('items.export-pdf');
+Route::post('/items/exportCsv',[ItemController::class,'exportCsv'])->name('items.export-csv');

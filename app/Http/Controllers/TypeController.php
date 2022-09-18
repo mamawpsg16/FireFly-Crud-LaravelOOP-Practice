@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Type;
+use App\Exports\TypesExport;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Requests\TypeRequest;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TypeController extends Controller
 {
@@ -16,7 +19,8 @@ class TypeController extends Controller
     public function index()
     {
         $types = Type::get();
-        return view('type.index',['types'=>$types]);
+
+        return view('type.index',compact('types'));
     }
 
     /**
@@ -38,6 +42,7 @@ class TypeController extends Controller
     public function store(TypeRequest $request)
     {
         Type::create($request->validated());
+
         return back()->with(['message' => 'Type created succesfully!']);
     }
 
@@ -58,6 +63,7 @@ class TypeController extends Controller
     public function edit($id)
     {
         $type = Type::findOrFail($id);
+
         return view('type.edit',compact('type'));
     }
 
@@ -71,7 +77,7 @@ class TypeController extends Controller
     public function update(TypeRequest $request,Type $type)
     {
         $type->update($request->validated());
-        // $this->insert->createPost($request->validated());
+
         return back()->with(['message' => 'Type Updated Successfully!']);
     }
 
@@ -84,6 +90,17 @@ class TypeController extends Controller
     public function destroy($id)
     {
         Type::findOrFail($id)->delete();
-        return back()->with(['message' => 'Type Deleted Successfully!']);
+        
+        return back()->with(['message' => 'Item Deleted Successfully!']);
+    }
+
+    public function exportPdf(){
+        $types = Type::get();
+        $pdf = Pdf::loadView('type.export.pdf', ['types' => $types]);
+        return $pdf->stream();
+    }
+
+    public function exportCsv(){
+        return Excel::download(new TypesExport(),'types.csv');
     }
 }
