@@ -4,16 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\Type;
+use App\Exports\ItemsExport;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Requests\ItemRequest;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ItemController extends Controller
 {
     public function index()
     {
         $items = Item::with('type')->get();
-        
         return view('item.index', compact('items'));
     }
 
@@ -84,9 +85,13 @@ class ItemController extends Controller
         return back()->with(['message' => 'Item Deleted Successfully!']);
     }
 
-    public function exportPDF(){
+    public function exportPdf(){
         $items = Item::with('type')->get();
         $pdf = Pdf::loadView('item.export.pdf', ['items' => $items]);
         return $pdf->stream();
+    }
+
+    public function exportCsv(){
+        return Excel::download(new ItemsExport(),'items.csv');
     }
 }

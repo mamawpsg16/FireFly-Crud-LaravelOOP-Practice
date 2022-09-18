@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Type;
+use App\Exports\TypesExport;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Requests\TypeRequest;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TypeController extends Controller
 {
@@ -92,9 +94,13 @@ class TypeController extends Controller
         return back()->with(['message' => 'Item Deleted Successfully!']);
     }
 
-    public function exportPDF(){
+    public function exportPdf(){
         $types = Type::get();
         $pdf = Pdf::loadView('type.export.pdf', ['types' => $types]);
         return $pdf->stream();
+    }
+
+    public function exportCsv(){
+        return Excel::download(new TypesExport(),'types.csv');
     }
 }

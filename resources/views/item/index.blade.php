@@ -4,12 +4,17 @@
     <x-session></x-session>
     <div class="flex justify-center mt-4">
         <div class=" w-3/6 flex justify-end space-x-2">
-            <a class="text-base bg-green-600 rounded-lg p-2 mt-4 hover:bg-green-700  rounded-md text-white text-base tracking-wider uppercase font-medium hover:cursor-pointer"
-                href="{{ route('items.create') }}">Create</a>
             <form action="{{ route('items.export-pdf') }}" method="POST" target="_blank">
                 @csrf
                 <button type="submit" class="text-base bg-gray-600 rounded-lg p-2 mt-4 hover:bg-gray-700  rounded-md text-white text-base tracking-wider uppercase font-medium hover:cursor-pointer">Export PDF</button>
             </form>
+            <form action="{{ route('items.export-csv') }}" method="POST" target="_blank">
+                @csrf
+                <button type="submit" class="text-base bg-gray-600 rounded-lg p-2 mt-4 hover:bg-gray-700  rounded-md text-white text-base tracking-wider uppercase font-medium hover:cursor-pointer">Download CSV</button>
+            </form>
+            <a class="text-base bg-green-600 rounded-lg p-2 mt-4 hover:bg-green-700  rounded-md text-white text-base tracking-wider uppercase font-medium hover:cursor-pointer"
+                href="{{ route('items.create') }}">Create
+            </a>
         </div>
     </div>
     <div   class="flex  justify-center  space-y-3 mt-2" >
@@ -46,5 +51,10 @@
             
             </tbody>
         </table>
+    </div>
+    <div   class="flex  justify-center  space-y-3 mt-2" >
+        <div class="w-3/6 ">
+            {{-- {{$items->links()}} --}}
+        </div>
     </div>
 </x-layout>
