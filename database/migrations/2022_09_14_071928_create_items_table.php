@@ -15,11 +15,10 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('type_id');
+            $table->foreignId('type_id')->constrained()->onDelete('cascade');
             $table->string('code')->unique();
             $table->string('description');
             $table->timestamps();
-            $table->foreignId('type_id')->constrained()->onDelete('cascade');
         });
     }
 
