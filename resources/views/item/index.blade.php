@@ -1,5 +1,6 @@
 <x-layout>
     @section('title','Item Lists')
+    <x-navbar></x-navbar>
     <x-session></x-session>
     <div class="flex justify-center mt-4">
         <div class=" w-3/6 flex justify-end space-x-2">

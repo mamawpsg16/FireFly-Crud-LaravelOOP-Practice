@@ -1,5 +1,6 @@
 <x-layout>
     @section('title','Create Type')
+    <x-navbar></x-navbar>
     <x-back-button route="types"></x-back-button>
     <x-create-update-card>
         <x-session></x-session>
