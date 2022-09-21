@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->string('description');
             $table->timestamps();
-            $table->foreign('type_id')->references('id')->on('types')->onDelete('cascade');
+            $table->foreignId('type_id')->constrained()->onDelete('cascade');
         });
     }
 
