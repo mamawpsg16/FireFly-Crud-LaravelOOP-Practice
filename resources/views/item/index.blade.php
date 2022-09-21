@@ -1,6 +1,5 @@
 <x-layout>
     @section('title','Item Lists')
-    <h1 class="text-2xl text-center">ITEMS</h1>
     <x-session></x-session>
     <div class="flex justify-center mt-4">
         <div class=" w-3/6 flex justify-end space-x-2">
@@ -18,7 +17,7 @@
         </div>
     </div>
     <div   class="flex  justify-center  space-y-3 mt-2" >
-        <table class="table-auto w-3/6 border-2">
+        <table class="table-auto w-3/6 border">
             <thead>
               <tr>
                 <th class="px-4 py-2 border">TYPE CODE</th>
@@ -52,9 +51,9 @@
             </tbody>
         </table>
     </div>
-    <div   class="flex  justify-center  space-y-3 mt-2" >
+    {{-- <div   class="flex  justify-center  space-y-3 mt-2" >
         <div class="w-3/6 ">
-            {{-- {{$items->links()}} --}}
+            {{ $items->links('pagination::tailwind') }}
         </div>
-    </div>
+    </div> --}}
 </x-layout>
