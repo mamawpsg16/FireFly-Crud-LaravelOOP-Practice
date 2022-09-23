@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Validation\Rule;
 class TypeRequest extends FormRequest
 {
     /**
@@ -23,8 +23,14 @@ class TypeRequest extends FormRequest
      */
     public function rules()
     {
+        if(request()->routeIs('types.store')){
+            $rule = 'required|unique:types';
+        }else if(request()->routeIs('types.update')){
+            $rule =  ['required',Rule::unique('types')->ignore($this->type->id)];
+        }
+
         return [
-            'code' => 'required|unique:types',
+            'code' =>  $rule,
             'description' => 'required'
         ];
     }

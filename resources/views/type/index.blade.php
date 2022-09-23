@@ -19,6 +19,7 @@
             </a>
         </div>
     </div>
+    <x-search route="type"></x-search>
     <div class="flex justify-center  space-y-3 mt-2">
         <table class="table-auto w-2/6 border">
             <thead>

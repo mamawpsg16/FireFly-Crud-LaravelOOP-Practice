@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('type_id')->constrained()->onDelete('cascade');
             $table->string('code')->unique();
             $table->string('description');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

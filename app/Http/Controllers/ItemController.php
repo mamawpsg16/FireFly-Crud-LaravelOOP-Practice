@@ -14,7 +14,7 @@ class ItemController extends Controller
 {
     public function index()
     {
-        $items = Item::with('type')->get();
+        $items = Item::with('type')->filter(request(['search']))->get();
         return view('item.index', compact('items'));
     }
 

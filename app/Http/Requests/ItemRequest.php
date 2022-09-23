@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ItemRequest extends FormRequest
@@ -23,8 +24,14 @@ class ItemRequest extends FormRequest
      */
     public function rules()
     {
+        if(request()->routeIs('items.store')){
+            $rule = 'required|unique:items';
+        }else if(request()->routeIs('items.update')){
+            $rule =  ['required',Rule::unique('items')->ignore($this->item->id)];
+        }
+
         return [
-            'code' => 'required|unique:items',
+            'code' => $rule,
             'description' => 'required',
             'type_id' =>'required'
         ];

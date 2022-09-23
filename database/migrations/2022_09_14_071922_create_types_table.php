@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique();
             $table->string('description');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('item_types');
+        Schema::dropIfExists('types');
     }
 };

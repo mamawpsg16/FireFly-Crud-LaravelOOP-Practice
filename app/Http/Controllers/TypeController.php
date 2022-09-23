@@ -18,7 +18,7 @@ class TypeController extends Controller
      */
     public function index()
     {
-        $types = Type::get();
+        $types = Type::filter(request(['search']))->get();
 
         return view('type.index',compact('types'));
     }
